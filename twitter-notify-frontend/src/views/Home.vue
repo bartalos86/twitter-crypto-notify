@@ -42,6 +42,24 @@ export default {
       }
     });
 
+    setInterval(() => {
+      axios
+        .get("http://localhost:3000/coins/SHIB,DOGE,ADA,LUNA")
+        .then((resp) => {
+          if (resp.status == 200) {
+            prices.value = resp.data;
+            console.log(resp.data);
+          }
+        });
+
+      axios.get("http://localhost:3000/news").then((resp) => {
+        if (resp.status == 200) {
+          tweets.value = resp.data;
+          console.log(resp.data);
+        }
+      });
+    }, 60000 * 5);
+
     return {
       prices,
       tweets,

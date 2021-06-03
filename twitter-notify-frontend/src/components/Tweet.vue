@@ -1,5 +1,7 @@
 <template>
-  <div class="tweet">
+  <div class="tweet" :class="{ 'tweet-reply': isReply }">
+    <p class="date">{{ new Date(tweet.created).toLocaleString("hu") }}</p>
+
     <div class="head">
       <img class="profile" :src="tweet.profilePicture" />
 
@@ -41,23 +43,24 @@
       </div>
     </div>
 
-    <!-- <div class="header">
-      
-      <div class="indicators">
-        <p class="indicator">Retweets: {{ tweet.retweets }}</p>
-        <p class="indicator">Favourites: {{ tweet.favourites }}</p>
-      </div>
-    </div>
-   
-
-    
-    
     <img
       class="image"
-      v-if="tweet.imageContent != ''"
+      v-if="tweet.imageContent"
       :src="tweet.imageContent"
       alt=""
-    /> -->
+    />
+
+    <tweet
+      v-if="tweet.quotedStatus"
+      :tweet="tweet.quotedStatus"
+      :isReply="true"
+    ></tweet>
+
+    <tweet
+      v-if="tweet.retweetTo"
+      :tweet="tweet.retweetTo"
+      :isReply="true"
+    ></tweet>
   </div>
 </template>
 
@@ -66,6 +69,7 @@ export default {
   name: "Tweet",
   props: {
     tweet: Object,
+    isReply: { type: Boolean, default: false },
   },
 };
 </script>
@@ -78,6 +82,10 @@ export default {
   margin-top: 25px;
   font-size: 15px;
   position: relative;
+}
+
+.tweet-reply {
+  background: #1f252e;
 }
 
 .head {
@@ -100,7 +108,7 @@ export default {
 .user {
   font-size: 17px;
   margin-top: 5px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .head,
@@ -159,6 +167,13 @@ export default {
 
 .content {
   margin-top: 12px;
-  font-weight: light;
+  font-weight: 400;
+}
+
+.date {
+  font-size: 12px;
+  font-weight: 200;
+  margin-bottom: 10px;
+  margin-top: 10px;
 }
 </style>
